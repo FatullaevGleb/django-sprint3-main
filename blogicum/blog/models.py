@@ -8,13 +8,20 @@ User = get_user_model()
 class Category(PublishedModel):
     title = models.CharField(
         max_length=256,
-        verbose_name='Тематическая категория'
+        verbose_name='Заголовок'
     )
     description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(unique=True, verbose_name='Слаг')
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Слаг',
+        help_text=(
+            'Идентификатор страницы для URL; '
+            'разрешены символы латиницы, цифры, дефис и подчёркивание.'
+            )
+        )
 
     class Meta:
-        verbose_name = 'Категория'
+        verbose_name = 'категория'
         verbose_name_plural = 'Категории'
         default_related_name = 'categories'
 
@@ -25,11 +32,11 @@ class Category(PublishedModel):
 class Location(PublishedModel):
     name = models.CharField(
         max_length=256,
-        verbose_name='Географическая метка'
+        verbose_name='Название места'
     )
 
     class Meta:
-        verbose_name = 'Местоположение'
+        verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
         default_related_name = 'locations'
 
@@ -38,15 +45,19 @@ class Location(PublishedModel):
 
 
 class Post(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Публикация')
-    text = models.TextField(verbose_name='Текст публикации')
+    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
-        verbose_name='Дата и время публикации'
+        verbose_name='Дата и время публикации',
+        help_text=(
+            'Если установить дату и время '
+            'в будущем — можно делать отложенные публикации.'
+            )
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Автор'
+        verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
         Location,
@@ -63,7 +74,7 @@ class Post(PublishedModel):
     )
 
     class Meta:
-        verbose_name = 'Публикация'
+        verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ('-pub_date',)
         default_related_name = 'posts'
