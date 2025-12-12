@@ -15,7 +15,7 @@ class PublishedModel(models.Model):
         help_text=(
             'Идентификатор страницы для URL; '
             'разрешены символы латиницы, цифры, дефис и подчёркивание.'
-            )
+        )
     )
 
     class Meta:
