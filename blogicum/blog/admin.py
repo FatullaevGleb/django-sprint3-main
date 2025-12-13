@@ -6,6 +6,7 @@ from .models import Category, Location, Post
 admin.site.empty_value_display = 'Не задано'
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Админ-панель для модели Post"""
 
@@ -35,6 +36,7 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ('-pub_date',)
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     """Админ-панель для модели Category."""
 
@@ -48,6 +50,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('title',)
 
 
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     """Админ-панель для модели Location."""
 
@@ -58,8 +61,3 @@ class LocationAdmin(admin.ModelAdmin):
     )
     list_editable = ('is_published',)
     list_filter = ('name',)
-
-
-admin.site.register(Post, PostAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Location, LocationAdmin)

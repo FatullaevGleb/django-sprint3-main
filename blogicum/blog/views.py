@@ -6,7 +6,7 @@ from django.utils import timezone
 POSTS_ON_PAGE = 5
 
 
-def post_requirements():
+def get_published_posts():
     return Post.objects.select_related(
         'category', 'location', 'author'
     ).filter(
@@ -16,27 +16,27 @@ def post_requirements():
     )
 
 
-def index(request):
+def show_main_page(request):
     template = 'blog/index.html'
-    post_list = post_requirements()[:POSTS_ON_PAGE]
+    post_list = get_published_posts()[:POSTS_ON_PAGE]
     context = {'post_list': post_list}
     return render(request, template, context)
 
 
-def category_posts(request, category_slug):
+def show_category_posts(request, category_slug):
     template = 'blog/category.html'
     category = get_object_or_404(
         Category,
         is_published=True,
         slug=category_slug
     )
-    post_list = post_requirements().filter(category=category)
+    post_list = get_published_posts().filter(category=category)
     context = {'category': category, 'post_list': post_list}
     return render(request, template, context)
 
 
-def post_detail(request, id):
+def show_post(request, id):
     template = 'blog/detail.html'
-    post = get_object_or_404(post_requirements(), pk=id)
+    post = get_object_or_404(get_published_posts(), pk=id)
     context = {'post': post}
     return render(request, template, context)
